@@ -46,6 +46,29 @@ module.exports = {
             res.status(200).send(userInfo)
         }
     },
+    loginUser: async (req, res) => {
+        const {username, password} = req.body
+        const validUser = await sequelize.query(`
+        SELECT * FROM user_info
+        WHERE user_name = '${username}';
+        `)
+        .catch((err) => console.log(err))
+
+        if (validUser[1].rowCount === 1) {
+            if (bcrypt.compareSync(password, validUser[0][0].user_pw)) {
+                let user_info = {
+                    user_info_id: validUser[0][0].user_info_id,
+                    first_name: validUser[0][0].first_name,
+                    username
+                }
+                res.status(200).send(user_info)
+            } else {
+                res.status(401).send('Password is incorrect')
+            }
+        } else {
+            res.status(401).send('Username is incorrect')
+        }
+    },
     newUserPost: (req, res) => {
         const {userId, imgURL, date, caption} = req.body
 
@@ -56,11 +79,11 @@ module.exports = {
             .catch((err) => console.log(err));
     },
     putProfileImage: (req, res) => {
-        const {userName, imgURL} = req.body
+        const {username, imgURL} = req.body
 
         sequelize.query(`INSERT INTO user_info (profile_image)
         VALUES ('${imgURL}')
-        WHERE user_name = '${userName}';`)
+        WHERE user_name = '${username}';`)
         .then((dbResult) => res.status(200).send(dbResult[0]))
         .catch((err) => console.log(err));
     },

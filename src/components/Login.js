@@ -1,24 +1,44 @@
 import React from 'react';
 import {useFormik} from 'formik'
+import axios from 'axios';
 
 function Login() {
     const initialValues = {
         username: "",
         password: "",
     }
+
     const onSubmit = (values) => {
-        console.log('submit clicked')
+        axios.post('http://localhost:5000/login', values)
+        .then((res) => {
+            localStorage.setItem('user_name', res.data.user_name)
+            localStorage.setItem('user_info_id', res.data.user_info_id)
+            localStorage.setItem('first_name', res.data.first_name)
+            localStorage.setItem('last_name', res.data.last_name)
+        })
+        .catch((err) => {
+            console.log(err.response.data)
+        })
     }
+
     const validate = (values) => {
-        console.log('validation')
+        const errors = {}
+        if(!values.username) {
+            errors.username = "Username Required"
+        }
+        if(!values.password) {
+            errors.password = "Password Required"
+        } else if (values.password.length < 8) {
+            errors.password = "Password must be longer than 8 characters"
+        }
+        return errors
     }
+
     const formik = useFormik({
         initialValues,
         onSubmit,
         validate
     })
-
-
 
     return <div>
         <h2>Login Page</h2>
@@ -38,7 +58,7 @@ function Login() {
                 placeholder="Password"
             />
             <button
-                type="subit"
+                type="submit"
                 disabled={!formik.isValid}
             >
                 Submit

@@ -106,7 +106,7 @@ function Register() {
             placeholder="Confirm Password"
         />
         <button
-            type="subit"
+            type="submit"
             disabled={!formik.isValid}
         >
             Submit

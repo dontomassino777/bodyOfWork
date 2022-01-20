@@ -10,10 +10,12 @@ const {sequelize} = require('./controller')
 app.use(cors());
 app.use(express.json());
 
-const {getUserPosts, registerNewUser, newUserPost, putProfileImage} = require("./controller.js")
+const {getUserPosts, registerNewUser, newUserPost, putProfileImage, loginUser} = require("./controller.js")
 
 
 app.get("/posts", getUserPosts);
+
+app.post("/login", loginUser);
 
 app.post("/register", registerNewUser);
 
