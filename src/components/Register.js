@@ -12,14 +12,19 @@ function Register() {
         emailAddress: "",
         username: "",
         password: "",
-        confirmPassword: "",
+        confirmPassword: ""
 
     }
     const onSubmit = (values) => {
         axios.post('http://localhost:5000/register', values)
         .then((res) => {
             console.log(res.data)
+            localStorage.setItem('user_name', res.data[0][0].user_name)
+            localStorage.setItem('user_info_id', res.data[0][0].user_info_id)
+            localStorage.setItem('first_name', res.data[0][0].first_name)
+            localStorage.setItem('last_name', res.data[0][0].last_name)
         })
+        .catch((err) => console.log(err.response.data))
     }
     const validate = (values) => {
         const errors = {}
