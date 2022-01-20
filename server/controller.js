@@ -25,8 +25,9 @@ module.exports = {
         const checkUsername = await sequelize.query(`
         SELECT * FROM user_info
         WHERE user_name = '${username}';`)
-        if (checkUsername[1].rowcount !== 0) {
-            res.status(500).send('Username already exists')
+        if (checkUsername[1].rowCount !== 0) {
+            let errorMessage = "Username already exists"
+            res.status(500).send(errorMessage)
         } else {
             const salt = bcrypt.genSaltSync(10)
             const passwordHash = bcrypt.hashSync(password, salt)
@@ -41,7 +42,7 @@ module.exports = {
                 );`)
             const userInfo = await sequelize.query(`
             SELECT user_info_id, first_name, user_name FROM user_info
-            WHERE user_name = ${username}
+            WHERE user_name = '${username}';
             `)
             res.status(200).send(userInfo)
         }

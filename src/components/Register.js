@@ -1,5 +1,7 @@
 import React from 'react';
 import {useFormik} from 'formik';
+import axios from 'axios';
+
 
 
 function Register() {
@@ -14,7 +16,10 @@ function Register() {
 
     }
     const onSubmit = (values) => {
-        console.log('submit clicked')
+        axios.post('http://localhost:5000/register', values)
+        .then((res) => {
+            console.log(res.data)
+        })
     }
     const validate = (values) => {
         const errors = {}
@@ -29,7 +34,7 @@ function Register() {
         if(!values.confirmPassword) {
             errors.confirmPassword = "Please confirm your password"
         } else if (values.password !== values.confirmPassword) {
-            errors.confirmPassword = "Oops, looks like your passwords don't match"
+            errors.confirmPassword = "Oops, passwords don't match"
         }
         if(!values.firstName) {
             errors.firstName = "Please give your first name"
@@ -40,6 +45,7 @@ function Register() {
         if (!values.emailAddress.includes("@")) {
             errors.emailAddress = "Please enter a valid email address"
         }
+        return errors
     }
     const formik = useFormik({
         initialValues,
@@ -101,6 +107,15 @@ function Register() {
             Submit
         </button>
       </form>
+      {/* How do I make the following error messages only display on submit if applicable? */}
+      {/* <div>
+          {formik.errors.username ? <div>{formik.errors.username}</div> : null}
+          {formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
+          {formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
+          {formik.errors.emailAddress ? <div>{formik.errors.emailAddress}</div> : null}
+          {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+          {formik.errors.confirmPassword ? <div>{formik.errors.confirmPassword}</div> : null}
+      </div> */}
     </div>;
 }
 
