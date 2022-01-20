@@ -26,6 +26,11 @@ function Register() {
         } else if (values.password.length < 8) {
             errors.password = "Password must be longer than 8 characters"
         }
+        if(!values.confirmPassword) {
+            errors.confirmPassword = "Please confirm your password"
+        } else if (values.password !== values.confirmPassword) {
+            errors.confirmPassword = "Oops, looks like your passwords don't match"
+        }
         if(!values.firstName) {
             errors.firstName = "Please give your first name"
         }
