@@ -1,8 +1,10 @@
 import React from 'react';
 import {useFormik} from 'formik'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login(props) {
+    let navigate = useNavigate();
     const initialValues = {
         username: "",
         password: "",
@@ -15,6 +17,8 @@ function Login() {
             localStorage.setItem('user_info_id', res.data.user_info_id)
             localStorage.setItem('first_name', res.data.first_name)
             localStorage.setItem('last_name', res.data.last_name)
+            props.logFunction()
+            navigate('/secret')
         })
         .catch((err) => {
             console.log(err.response.data)
