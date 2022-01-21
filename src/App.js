@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route path='*' element={ isLoggedIn ?
         <Dashboard /> : <Login logFunction={loginUser}/> } />
-        <Route path='register' element={ <Register /> } />
+        <Route path='register' element={ <Register logFunction={loginUser}/> } />
       </Routes>
     </div>
   );

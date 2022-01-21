@@ -1,10 +1,12 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
-function Register() {
+function Register(props) {
+    let navigate = useNavigate();
     const initialValues = {
         
         firstName: "",
@@ -23,6 +25,8 @@ function Register() {
             localStorage.setItem('user_info_id', res.data[0][0].user_info_id)
             localStorage.setItem('first_name', res.data[0][0].first_name)
             localStorage.setItem('last_name', res.data[0][0].last_name)
+            props.logFunction()
+            navigate('/secret')
         })
         .catch((err) => console.log(err.response.data))
     }
@@ -59,7 +63,7 @@ function Register() {
     })
     return <div>
       <h2>
-          Register
+          Sign Up
       </h2>
       <form onSubmit={formik.handleSubmit}
       >
